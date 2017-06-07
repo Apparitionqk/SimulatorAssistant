@@ -7,7 +7,10 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 let SCREEN_WIDTH:CGFloat = UIScreen.main.bounds.size.width
 let SCREEN_HEIGHT:CGFloat = UIScreen.main.bounds.size.height
 let CONTENT_HEIGHT:CGFloat = UIScreen.main.bounds.size.height - 64 - 49
+
+let APPINFONOTIFICATION = "AppInfo"

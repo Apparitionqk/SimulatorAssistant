@@ -9,6 +9,22 @@
 import UIKit
 
 class BoutiqueRootViewController: BaseViewController, UIScrollViewDelegate, BoutiqueItemProtocal {
+    var necessaryView:NecessaryView = {
+        //定义collectionView的布局类型，流布局
+        let layout = UICollectionViewFlowLayout()
+        //设置cell的大小
+        layout.itemSize = CGSize(width: (SCREEN_WIDTH-40)/3, height: (CONTENT_HEIGHT-44)/3)
+        //滑动方向 默认方向是垂直
+        layout.scrollDirection = .vertical
+        //每个Item之间最小的间距
+        layout.minimumInteritemSpacing = 0
+        //每行之间最小的间距
+        layout.minimumLineSpacing = 10
+        let view = NecessaryView.init(frame: CGRect.init(origin: CGPoint.init(x: SCREEN_WIDTH, y: 0), size: CGSize.init(width: SCREEN_WIDTH, height: CONTENT_HEIGHT-44)), collectionViewLayout: layout)
+        return view
+    }()
+    var newGameView = NewGameView()
+    var promotionView = PromotionView()
     let itemView: BoutiqueItemView = {
         let view = BoutiqueItemView.init(items: ["热门","必备","新游","活动",], frame: CGRect.init(x: 0, y: 64, width: SCREEN_WIDTH, height: 44))
         return view
@@ -25,6 +41,8 @@ class BoutiqueRootViewController: BaseViewController, UIScrollViewDelegate, Bout
          let view = HotListView.init(frame: CGRect.init(x: 0, y: 0, width: SCREEN_WIDTH, height: CONTENT_HEIGHT-44), style: .plain)
         return view
     }()
+   
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -35,6 +53,8 @@ class BoutiqueRootViewController: BaseViewController, UIScrollViewDelegate, Bout
         scrollView.delegate = self
         addSubViews()
         self.view.setNeedsUpdateConstraints()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(notificationReceived(notifi:)), name: NSNotification.Name(rawValue: APPINFONOTIFICATION), object: nil)
         
         networkOperation()
     }
@@ -52,28 +72,29 @@ class BoutiqueRootViewController: BaseViewController, UIScrollViewDelegate, Bout
        
         scrollView.addSubview(hotList)
         
-        //定义collectionView的布局类型，流布局
-        let layout = UICollectionViewFlowLayout()
-        //设置cell的大小
-        layout.itemSize = CGSize(width: (SCREEN_WIDTH-40)/3, height: (CONTENT_HEIGHT-44)/3)
-        //滑动方向 默认方向是垂直
-        layout.scrollDirection = .vertical
-        //每个Item之间最小的间距
-        layout.minimumInteritemSpacing = 0
-        //每行之间最小的间距
-        layout.minimumLineSpacing = 10
-        let necessaryView = NecessaryView.init(frame: CGRect.init(origin: CGPoint.init(x: SCREEN_WIDTH, y: 0), size: CGSize.init(width: SCREEN_WIDTH, height: CONTENT_HEIGHT-44)), collectionViewLayout: layout)
+        
         scrollView.addSubview(necessaryView)
         
-        let newGameView = NewGameView.init(frame: CGRect.init(x: SCREEN_WIDTH*2, y: 0, width: SCREEN_WIDTH, height: CONTENT_HEIGHT-44), style: .plain)
+        newGameView = NewGameView.init(frame: CGRect.init(x: SCREEN_WIDTH*2, y: 0, width: SCREEN_WIDTH, height: CONTENT_HEIGHT-44), style: .plain)
         scrollView.addSubview(newGameView)
         
-        let promotionView = PromotionView.init(frame: CGRect.init(x: SCREEN_WIDTH*3, y: 0, width: SCREEN_WIDTH, height: CONTENT_HEIGHT-44), style: .plain)
+        promotionView = PromotionView.init(frame: CGRect.init(x: SCREEN_WIDTH*3, y: 0, width: SCREEN_WIDTH, height: CONTENT_HEIGHT-44), style: .plain)
         scrollView.addSubview(promotionView)
     }
 
     func networkOperation()  {
         HotListViewModel.getAppData(urlString: "http://interface.xyzs.com/v2/ios/c04/homepage/index?clientversion=6.1.5&lang=zh-Hans-CN&clienttype=1&device_uuid=Unknow&flagdata1=0&sn=BC7BCEAE-E6EF-4A86-9A27-4D68D9E176AC&devicetype=1&systemversion=10.3.1&deviceimei=BC7BCEAE-E6EF-4A86-9A27-4D68D9E176AC&channel=500077&appleid=&uuid=2017B1AB-FC87-431F-8FFD-7AF43EA814D8&nettype=WiFi&isidfatracking=1&resolveip=17.253.75.205&clientip=119.253.46.106&platform=iPhone8,2&uid=-1&simulateidfa=6FF0C3DB-7D1E-5E7C-DE7B-4FE55947E8A2&idfv=67D83F28-EED4-42F0-A480-6FF9C6C4747A&jailbreak=1&identity=760&openidfa=20C530C2-5544-5D10-0484-60F76727E7F7&showModel=iphone_6plus&certId=760&isauthor=2&flagdata=0&spflag=0&ipatype=1&screensize=1242-2208&idfa=BC7BCEAE-E6EF-4A86-9A27-4D68D9E176AC&timestamp=1495881257&sign=86eb76b41a2abd3dc695937e0dd18986&size=20&p=1&type=2&page=1", tableView: hotList)
+        
+    }
+    
+    // MARK: Notification
+    func notificationReceived(notifi: NSNotification) {
+        let appModel: AppModel = notifi.object as! AppModel
+        let appinfoViewController = AppInfoViewController()
+        appinfoViewController.appModel = appModel
+        self.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(appinfoViewController, animated: true)
+        self.hidesBottomBarWhenPushed = false
     }
     
     // MARK: ScrollViewDelegate
@@ -84,6 +105,23 @@ class BoutiqueRootViewController: BaseViewController, UIScrollViewDelegate, Bout
         let offset:CGPoint = scrollView.contentOffset
         let itemWidth = itemView.width()-itemView.borderSpace*2+itemView.intervalSpace
         itemView.slideView.frame.origin.x = itemView.borderSpace+(itemWidth*offset.x)/scrollView.contentSize.width
+        
+        switch scrollView.contentOffset.x {
+        case SCREEN_WIDTH:
+            if  necessaryView.jsonData == nil {
+                NecessaryViewModel.getAppData(colloctionView: necessaryView)
+            }
+        case SCREEN_WIDTH*2:
+            if  newGameView.dataJson == nil {
+                NewGameViewModel.getAppData(gameView: newGameView)
+            }
+        case SCREEN_WIDTH*3:
+            if  promotionView.jsonData == nil {
+                PromotionViewModel.getAppData(promotionView: promotionView)
+            }
+        default:
+            break
+        }
 
     }
     

@@ -7,9 +7,10 @@
 //
 
 import UIKit
+import SwiftyJSON
 
 class PromotionView: UITableView, UITableViewDelegate, UITableViewDataSource {
-
+    var jsonData:JSON?
     override init(frame: CGRect, style: UITableViewStyle) {
         super.init(frame: frame, style: style)
         registNib()
@@ -19,8 +20,7 @@ class PromotionView: UITableView, UITableViewDelegate, UITableViewDataSource {
         self.separatorStyle = .singleLine
     }
     func registNib()  {
-        let cellNib = UINib(nibName: "HotCell", bundle: nil)
-        self.register(cellNib, forCellReuseIdentifier: "HotCell")
+        self.register(HotCell.classForCoder(), forCellReuseIdentifier: "HotCell")
     }
     
     // MARK: UITableViewDataSource
@@ -28,7 +28,7 @@ class PromotionView: UITableView, UITableViewDelegate, UITableViewDataSource {
         return 1
     }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return jsonData != nil ? (jsonData?.count)! : 0
     }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 80
@@ -36,6 +36,7 @@ class PromotionView: UITableView, UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let  cellIdenfier = "HotCell"
         let cell: HotCell = self.dequeueReusableCell(withIdentifier: cellIdenfier) as! HotCell
+        cell.setJsonData(json: (jsonData?[indexPath.row])!)
         return cell
     }
     
@@ -45,7 +46,10 @@ class PromotionView: UITableView, UITableViewDelegate, UITableViewDataSource {
         
     }
     
-    
+    func reloadWithData(dic:JSON) {
+        jsonData = dic
+        self.reloadData()
+    }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

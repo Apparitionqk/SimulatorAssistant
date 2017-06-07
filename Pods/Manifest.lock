@@ -1,0 +1,52 @@
+PODS:
+  - Alamofire (4.4.0)
+  - AlamofireImage (3.2.0):
+    - Alamofire (~> 4.1)
+  - MJExtension (3.0.13)
+  - PINCache (3.0.1-beta.4):
+    - PINCache/Arc-exception-safe (= 3.0.1-beta.4)
+    - PINCache/Core (= 3.0.1-beta.4)
+  - PINCache/Arc-exception-safe (3.0.1-beta.4):
+    - PINCache/Core
+  - PINCache/Core (3.0.1-beta.4):
+    - PINOperation (= 1.0.3)
+  - PINOperation (1.0.3)
+  - PINRemoteImage/Core (3.0.0-beta.9):
+    - PINOperation
+  - PINRemoteImage/iOS (3.0.0-beta.9):
+    - PINRemoteImage/Core
+  - PINRemoteImage/PINCache (3.0.0-beta.9):
+    - PINCache (= 3.0.1-beta.4)
+    - PINRemoteImage/Core
+  - SnapKit (3.2.0)
+  - SwiftyJSON (3.1.4)
+  - Texture (2.3.2):
+    - Texture/PINRemoteImage (= 2.3.2)
+  - Texture/Core (2.3.2)
+  - Texture/PINRemoteImage (2.3.2):
+    - PINRemoteImage/iOS (= 3.0.0-beta.9)
+    - PINRemoteImage/PINCache
+    - Texture/Core
+
+DEPENDENCIES:
+  - Alamofire (~> 4.4)
+  - AlamofireImage
+  - MJExtension
+  - SnapKit (~> 3.2.0)
+  - SwiftyJSON
+  - Texture
+
+SPEC CHECKSUMS:
+  Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
+  AlamofireImage: 157ed682cc81d3b9db4fb90c1f12180ac552d93b
+  MJExtension: 5932755f451458eefa24239358817f8d291240c7
+  PINCache: a89c8f609232afac77128557bd12c861844423d7
+  PINOperation: ac23db44796d4a564ecf9b5ea7163510f579b71d
+  PINRemoteImage: e4e02e15a6f96cedbcef2abf1c9c1228dc9897d7
+  SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
+  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
+  Texture: 18664254419f35de27af76399b3b265cbad5740a
+
+PODFILE CHECKSUM: 412857c16fad2a359d88fc5d30d3597ebc5fb973
+
+COCOAPODS: 1.2.1

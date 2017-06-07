@@ -9,16 +9,23 @@
 
 import UIKit
 enum IconMarkType:Int {
-    case Hot = 3
-    case First = 2
-    case Promotion = 5
-    case Recommond = 4
+    
     case None = 0
+    case OnlyOne = 1
+    case First = 2
+    case Hot = 3
+    case Recommond = 4
+    case Promotion = 5
+   
+    
 }
 class IconMarkView: UIView {
     var markType: IconMarkType = .None{
         didSet{
             switch markType {
+            case .OnlyOne:
+                self.titleLabel.text = "独家"
+                self.backgroundColor = .purple
             case .First:
                 self.titleLabel.text = "首发"
                 self.backgroundColor = .blue

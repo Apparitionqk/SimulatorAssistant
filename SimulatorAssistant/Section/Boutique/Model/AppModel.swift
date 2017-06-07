@@ -43,14 +43,14 @@ class AppModel: NSObject {
         addtime = json["addtime"].stringValue
         bundleVersion = json["bundleVersion"].stringValue
         bundleid = json["bundleid"].stringValue
-        cusDesc = json["cus_desc"].stringValue
+        cusDesc = json["cus_desc"] != JSON.null ? json["cus_desc"].stringValue : (json["cusdesc"] != JSON.null ? json["cusdesc"].stringValue : "")
         downloadIconType = json["download_icon_type"].stringValue
         downloadnum = json["downloadnum"].stringValue
         firstClassId = json["first_class_id"].stringValue
         giftPackType = json["gift_pack_type"].stringValue
         giftType = json["gift_type"].stringValue
         icon = json["icon"].stringValue
-        iconMark = json["icon_mark"].stringValue
+        iconMark = json["icon_mark"] != JSON.null ? json["icon_mark"].stringValue : (json["iconmark"] != JSON.null ? json["iconmark"].stringValue : "")// json["icon_mark"].stringValue
         isAppid = json["is_appid"].stringValue
         isCooperation = json["is_cooperation"].intValue
         itunesid = json["itunesid"].stringValue
@@ -62,7 +62,6 @@ class AppModel: NSObject {
         titleArr = [String]()
         let titleArrArray = json["title_arr"].arrayValue
         for titleArrJson in titleArrArray{
-//            titleArr.append(titleArrJson.stringValue)
             titleArr?.append(titleArrJson.stringValue)
         }
         version = json["version"].stringValue

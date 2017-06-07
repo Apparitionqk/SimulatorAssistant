@@ -24,8 +24,6 @@ class HotListViewModel: NSObject {
     }
     class func getAppData(urlString: String,tableView: HotListView) {
         Alamofire.request(urlString).responseJSON { (dataResponse) in
-//            let dict = try? JSONSerialization.jsonObject(with: dataResponse.value, options: JSONSerialization.ReadingOptions)
-            
             switch dataResponse.result {
                 case.success:
                     let dict =  JSON(dataResponse.result.value!)//json as! Dictionary<String,AnyObject>

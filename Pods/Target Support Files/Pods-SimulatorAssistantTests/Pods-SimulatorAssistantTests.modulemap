@@ -1,0 +1,6 @@
+framework module Pods_SimulatorAssistantTests {
+  umbrella header "Pods-SimulatorAssistantTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

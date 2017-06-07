@@ -29,7 +29,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="YF2-zu-qxS">
             <objects>
-                <tabBarController id="MTB-ru-9CI" sceneMemberID="viewController">
+                <tabBarController hidesBottomBarWhenPushed="YES" id="MTB-ru-9CI" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" id="ckW-BS-2Vd">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>

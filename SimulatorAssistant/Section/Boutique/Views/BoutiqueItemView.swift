@@ -48,7 +48,7 @@ class BoutiqueItemView: UIView {
     func buttonAction(button: UIButton) {
         print("\(button.tag)")
         UIView.animate(withDuration: 0.3) {
-            self.slideView.frame = button.frame
+            self.slideView.frame.origin.x = button.frame.origin.x
         }
         delegate?.selectedButtonAtIndex(index: button.tag)
     }
